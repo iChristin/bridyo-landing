@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bridyo — Instantly connect with humans and land opportunities</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F8F9FB;
+    --sand: #EDF7F3;
+    --orange: #2DA87A;
+    --orange-light: #5FCBA0;
+    --green: #2563EB;
+    --green-light: #60A5FA;
+    --charcoal: #1A1F2E;
+    --muted: #6B7280;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2.5rem;
+    background: rgba(248,249,251,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--orange);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--green); }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .lang-btn {
+    background: none;
+    border: 1.5px solid var(--orange);
+    color: var(--orange);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--orange);
+    color: white;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.08), transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.08), transparent 70%);
+    bottom: 0; left: -80px;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--sand);
+    border: 1px solid rgba(45,168,122,0.18);
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.1rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    max-width: 760px;
+    margin-bottom: 1.5rem;
+    color: var(--charcoal);
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--orange);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 0.6rem;
+    font-weight: 400;
+  }
+
+  .hero-sub-fr {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .waitlist-form input {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 0.85rem 1.4rem;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 12px;
+    background: white;
+    outline: none;
+    width: 280px;
+    transition: border 0.2s;
+    color: var(--charcoal);
+  }
+
+  .waitlist-form input:focus { border-color: var(--orange); }
+  .waitlist-form input::placeholder { color: #bbb; }
+
+  .btn-primary {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.85rem 2rem;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    background: #d0541f;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(45,168,122,0.22);
+  }
+
+  .hero-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2.5rem 2rem;
+    background: var(--sand);
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* SECTION COMMON */
+  section {
+    padding: 5rem 2rem;
+  }
+
+  .section-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--charcoal);
+  }
+
+  .section-title em {
+    font-style: normal;
+    color: var(--orange);
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 560px;
+  }
+
+  /* PROBLEM */
+  .problem { background: var(--white); }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pain-card {
+    background: var(--cream);
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pain-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--orange-light);
+    opacity: 0.5;
+  }
+
+  .pain-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .pain-card h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--charcoal);
+  }
+
+  .pain-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .pain-card .fr {
+    font-size: 0.82rem;
+    color: var(--muted);
+    opacity: 0.7;
+    font-style: italic;
+    margin-top: 0.4rem;
+  }
+
+  /* HOW IT WORKS */
+  .how { background: var(--cream); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    position: relative;
+  }
+
+  .step {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .step-dot {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+  }
+
+  .step h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .step p { font-size: 0.88rem; color: var(--muted); }
+  .step .fr { font-size: 0.8rem; color: var(--muted); opacity: 0.7; font-style: italic; margin-top: 0.3rem; }
+
+  /* FOR WHO */
+  .forwho { background: var(--sand); }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 600px) { .who-grid { grid-template-columns: 1fr; } }
+
+  .who-card {
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .who-card.seeker {
+    background: var(--orange);
+    color: white;
+  }
+
+  .who-card.helper {
+    background: var(--green);
+    color: white;
+  }
+
+  .who-card h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .who-card .subtitle {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .who-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .who-card ul li {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    opacity: 0.95;
+  }
+
+  .who-card ul li::before {
+    content: '✓';
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* CTA FINAL */
+  .cta-section {
+    background: var(--charcoal);
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+
+  .cta-section .section-eyebrow { color: var(--orange-light); }
+
+  .cta-section .section-title {
+    color: white;
+    max-width: 600px;
+    margin: 0 auto 1rem;
+  }
+
+  .cta-section .section-subtitle {
+    color: rgba(255,255,255,0.6);
+    margin: 0 auto 2.5rem;
+  }
+
+  .cta-section .waitlist-form input {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .cta-section .waitlist-form input::placeholder { color: rgba(255,255,255,0.4); }
+  .cta-section .hero-note { color: rgba(255,255,255,0.4); }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    padding: 1.5rem 2rem;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+  }
+
+  footer span { color: var(--orange); }
+
+  /* SUCCESS MESSAGE */
+  .success-msg {
+    display: none;
+    background: var(--green);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    .stats { gap: 1.5rem; }
+    .hero h1 { letter-spacing: -0.5px; }
+    .waitlist-form { flex-direction: column; align-items: center; }
+    .waitlist-form input { width: 100%; max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">brid<span>yo</span></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge" data-en="🚀 Now in Beta — Join the waitlist" data-fr="🚀 Bêta en cours — Rejoins la liste d'attente">🚀 Now in Beta — Join the waitlist</div>
+  <h1 data-en="Instantly connect with <em>humans</em> and land opportunities" data-fr="Connecte-toi instantanément avec des <em>humains</em> et décroche des opportunités">Instantly connect with <em>humans</em> and land opportunities</h1>
+  <p class="hero-sub" data-en="Real people. Real conversations. Real results — in minutes, not weeks." data-fr="De vraies personnes. De vraies conversations. De vrais résultats — en minutes, pas en semaines.">Real people. Real conversations. Real results — in minutes, not weeks.</p>
+  <div class="waitlist-form">
+    <input type="email" id="hero-email" placeholder="your@email.com" data-placeholder-en="your@email.com" data-placeholder-fr="ton@email.com">
+    <button class="btn-primary" onclick="handleSignup('hero')" data-en="Get Early Access" data-fr="Accès Anticipé">Get Early Access</button>
+  </div>
+  <div class="success-msg" id="hero-success" data-en="🎉 You're on the list! We'll be in touch soon." data-fr="🎉 Tu es sur la liste ! On te contacte bientôt.">🎉 You're on the list! We'll be in touch soon.</div>
+  <p class="hero-note" data-en="Free to join · No credit card required" data-fr="Gratuit · Aucune carte bancaire requise">Free to join · No credit card required</p>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-number">34.9M</div>
+    <div class="stat-label" data-en="job seekers in OECD countries" data-fr="chercheurs d'emploi dans l'OCDE">job seekers in OECD countries</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">< 5 min</div>
+    <div class="stat-label" data-en="average connection time" data-fr="temps de connexion moyen">average connection time</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">100%</div>
+    <div class="stat-label" data-en="human helpers, no AI bots" data-fr="helpers humains, pas de bots IA">human helpers, no AI bots</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="section-inner">
+    <div class="section-eyebrow" data-en="The Problem" data-fr="Le Problème">The Problem</div>
+    <h2 class="section-title" data-en="Job searching is <em>lonely, slow,</em> and broken." data-fr="La recherche d'emploi est <em>solitaire, lente,</em> et cassée.">Job searching is <em>lonely, slow,</em> and broken.</h2>
+    <p class="section-subtitle" data-en="Algorithms don't get you hired. Humans do." data-fr="Les algorithmes ne vous font pas décrocher un emploi. Les humains, oui.">Algorithms don't get you hired. Humans do.</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">🌫️</div>
+        <h3 data-en="You don't know how to stand out" data-fr="Tu ne sais pas comment te démarquer">You don't know how to stand out</h3>
+        <p data-en="CVs, LinkedIn, cover letters — everyone looks the same. You need someone who knows what actually works." data-fr="CV, LinkedIn, lettres de motivation — tout le monde se ressemble. Tu as besoin de quelqu'un qui sait ce qui marche vraiment.">CVs, LinkedIn, cover letters — everyone looks the same. You need someone who knows what actually works.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🕸️</div>
+        <h3 data-en="You don't have the right network" data-fr="Tu n'as pas le bon réseau">You don't have the right network</h3>
+        <p data-en="80% of jobs are filled through connections. If you don't know the right people, you're left out — until now." data-fr="80% des emplois sont pourvus par le réseau. Si tu ne connais pas les bonnes personnes, tu es exclu — jusqu'à maintenant.">80% of jobs are filled through connections. If you don't know the right people, you're left out — until now.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">⏳</div>
+        <h3 data-en="Processes are long and opaque" data-fr="Les processus sont longs et opaques">Processes are long and opaque</h3>
+        <p data-en="Weeks of waiting. No feedback. No clarity. You deserve real guidance from someone who's been inside the system." data-fr="Des semaines d'attente. Aucun retour. Aucune clarté. Tu mérites des conseils réels de quelqu'un qui connaît le système.">Weeks of waiting. No feedback. No clarity. You deserve real guidance from someone who's been inside the system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="section-inner">
+    <div class="section-eyebrow" data-en="How it works" data-fr="Comment ça marche">How it works</div>
+    <h2 class="section-title" data-en="Three steps to your <em>next opportunity</em>" data-fr="Trois étapes vers ta <em>prochaine opportunité</em>">Three steps to your <em>next opportunity</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <h3 data-en="Tell us what you need" data-fr="Dis-nous ce dont tu as besoin">Tell us what you need</h3>
+        <p data-en="CV review, interview prep, insider advice, network intro — you choose." data-fr="Révision de CV, préparation entretien, conseils insider, intro réseau — tu choisis.">CV review, interview prep, insider advice, network intro — you choose.</p>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <h3 data-en="Get matched instantly" data-fr="Être mis en relation instantanément">Get matched instantly</h3>
+        <p data-en="Bridyo connects you in minutes with a verified human helper available right now." data-fr="Bridyo te connecte en quelques minutes avec un helper humain vérifié, disponible maintenant.">Bridyo connects you in minutes with a verified human helper available right now.</p>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <h3 data-en="Talk, learn, and move forward" data-fr="Échange, apprends, avance">Talk, learn, and move forward</h3>
+        <p data-en="Chat or video call — get real advice, real connections, real results." data-fr="Chat ou appel vidéo — de vrais conseils, de vraies connexions, de vrais résultats.">Chat or video call — get real advice, real connections, real results.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="forwho">
+  <div class="section-inner">
+    <div class="section-eyebrow" data-en="Who is Bridyo for?" data-fr="Pour qui est Bridyo ?">Who is Bridyo for?</div>
+    <h2 class="section-title" data-en="Two sides. One <em>bridge.</em>" data-fr="Deux côtés. Un seul <em>pont.</em>">Two sides. One <em>bridge.</em></h2>
+    <div class="who-grid">
+      <div class="who-card seeker">
+        <h3 data-en="Job Seekers" data-fr="Chercheurs d'emploi">Job Seekers</h3>
+        <p class="subtitle" data-en="Find your next opportunity faster" data-fr="Trouve ta prochaine opportunité plus vite">Find your next opportunity faster</p>
+        <ul>
+          <li data-en="Get instant human guidance" data-fr="Obtiens des conseils humains instantanés">Get instant human guidance</li>
+          <li data-en="Access insider knowledge" data-fr="Accède à des connaissances insider">Access insider knowledge</li>
+          <li data-en="Expand your network in minutes" data-fr="Élargis ton réseau en quelques minutes">Expand your network in minutes</li>
+          <li data-en="Prepare for interviews with real feedback" data-fr="Prépare tes entretiens avec de vrais retours">Prepare for interviews with real feedback</li>
+        </ul>
+      </div>
+      <div class="who-card helper">
+        <h3 data-en="Helpers" data-fr="Helpers">Helpers</h3>
+        <p class="subtitle" data-en="Coaches, recruiters, mentors, insiders" data-fr="Coachs, recruteurs, mentors, insiders">Coaches, recruiters, mentors, insiders</p>
+        <ul>
+          <li data-en="Share your expertise and get paid" data-fr="Partage ton expertise et sois rémunéré">Share your expertise and get paid</li>
+          <li data-en="Set your own availability" data-fr="Définis ta propre disponibilité">Set your own availability</li>
+          <li data-en="Build your reputation and reach" data-fr="Construis ta réputation et ta visibilité">Build your reputation and reach</li>
+          <li data-en="Make a real difference in someone's life" data-fr="Fais une vraie différence dans la vie de quelqu'un">Make a real difference in someone's life</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="section-eyebrow" data-en="Join the movement" data-fr="Rejoins le mouvement">Join the movement</div>
+  <h2 class="section-title" data-en="Be the first to <em>experience</em> Bridyo" data-fr="Sois parmi les premiers à <em>découvrir</em> Bridyo">Be the first to <em>experience</em> Bridyo</h2>
+  <p class="section-subtitle" data-en="Join the waitlist today and get early access when we launch." data-fr="Rejoins la liste d'attente aujourd'hui et accède à la plateforme en avant-première.">Join the waitlist today and get early access when we launch.</p>
+  <div class="waitlist-form">
+    <input type="email" id="cta-email" placeholder="your@email.com" data-placeholder-en="your@email.com" data-placeholder-fr="ton@email.com">
+    <button class="btn-primary" onclick="handleSignup('cta')" data-en="Join the Waitlist" data-fr="Rejoindre la liste">Join the Waitlist</button>
+  </div>
+  <div class="success-msg" id="cta-success" data-en="🎉 You're on the list! We'll be in touch soon." data-fr="🎉 Tu es sur la liste ! On te contacte bientôt.">🎉 You're on the list! We'll be in touch soon.</div>
+  <p class="hero-note" data-en="Free to join · No spam, ever." data-fr="Gratuit · Zéro spam, promis.">Free to join · No spam, ever.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Bridyo</span> · Instantly connect with humans and land opportunities</p>
+</footer>
+
+<script>
+  let currentLang = 'en';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const text = el.getAttribute(`data-${lang}`);
+      if (text) el.innerHTML = text;
+    });
+
+    document.querySelectorAll('[data-placeholder-en]').forEach(el => {
+      el.placeholder = el.getAttribute(`data-placeholder-${lang}`);
+    });
+  }
+
+  function handleSignup(section) {
+    const input = document.getElementById(`${section}-email`);
+    const success = document.getElementById(`${section}-success`);
+    const email = input.value.trim();
+
+    if (!email || !email.includes('@')) {
+      input.style.borderColor = '#E8622A';
+      input.focus();
+      setTimeout(() => input.style.borderColor = '', 1500);
+      return;
+    }
+
+    input.style.display = 'none';
+    document.querySelector(`#${section}-email`).closest('.waitlist-form').querySelector('.btn-primary').style.display = 'none';
+    success.style.display = 'inline-block';
+    success.innerHTML = success.getAttribute(`data-${currentLang}`);
+  }
+</script>
+</body>
+</html>
