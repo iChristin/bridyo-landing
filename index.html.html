@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bridyo — Réservez un traiteur africain en quelques minutes</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F8F9FB;
+    --sand: #EDF7F3;
+    --orange: #C2510F;
+    --orange-light: #E07840;
+    --green: #2DA87A;
+    --green-light: #5FCBA0;
+    --charcoal: #1A1F2E;
+    --muted: #6B7280;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 2.5rem;
+    background: rgba(248,249,251,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--orange);
+    letter-spacing: -0.5px;
+  }
+
+  .logo span { color: var(--green); }
+
+  .lang-toggle {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .lang-btn {
+    background: none;
+    border: 1.5px solid var(--orange);
+    color: var(--orange);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--orange);
+    color: white;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.08), transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(37,99,235,0.08), transparent 70%);
+    bottom: 0; left: -80px;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--sand);
+    border: 1px solid rgba(45,168,122,0.18);
+    color: var(--orange);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.1rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+    max-width: 760px;
+    margin-bottom: 1.5rem;
+    color: var(--charcoal);
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--orange);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 0.6rem;
+    font-weight: 400;
+  }
+
+  .hero-sub-fr {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  .waitlist-form {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .waitlist-form input,
+  .waitlist-form select {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 0.85rem 1.4rem;
+    border: 1.5px solid rgba(0,0,0,0.12);
+    border-radius: 12px;
+    background: white;
+    outline: none;
+    width: 240px;
+    transition: border 0.2s;
+    color: var(--charcoal);
+    appearance: none;
+  }
+
+  .waitlist-form select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7280' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-color: white;
+    padding-right: 2.5rem;
+  }
+
+  .waitlist-form input:focus,
+  .waitlist-form select:focus { border-color: var(--orange); }
+  .waitlist-form input::placeholder { color: #bbb; }
+
+  .btn-primary {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.85rem 2rem;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    background: #259168;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(45,168,122,0.22);
+  }
+
+  .hero-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* STATS */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2.5rem 2rem;
+    background: var(--sand);
+    flex-wrap: wrap;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-number {
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--orange);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* SECTION COMMON */
+  section { padding: 5rem 2rem; }
+
+  .section-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--charcoal);
+  }
+
+  .section-title em {
+    font-style: normal;
+    color: var(--orange);
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 560px;
+  }
+
+  /* PROBLEM */
+  .problem { background: var(--white); }
+
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pain-card {
+    background: var(--cream);
+    border: 1px solid rgba(0,0,0,0.07);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pain-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--orange-light);
+    opacity: 0.5;
+  }
+
+  .pain-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .pain-card h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--charcoal);
+  }
+
+  .pain-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* HOW IT WORKS */
+  .how { background: var(--cream); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    position: relative;
+  }
+
+  .step {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .step-dot {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--green);
+    color: white;
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+  }
+
+  .step h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .step p { font-size: 0.88rem; color: var(--muted); }
+
+  /* FOR WHO */
+  .forwho { background: var(--sand); }
+
+  .who-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 600px) { .who-grid { grid-template-columns: 1fr; } }
+
+  .who-card {
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .who-card.seeker {
+    background: var(--orange);
+    color: white;
+  }
+
+  .who-card.helper {
+    background: var(--green);
+    color: white;
+  }
+
+  .who-card h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .who-card .subtitle {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+
+  .who-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .who-card ul li {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    opacity: 0.95;
+  }
+
+  .who-card ul li::before {
+    content: '✓';
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* CTA FINAL */
+  .cta-section {
+    background: var(--charcoal);
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+
+  .cta-section .section-eyebrow { color: var(--orange-light); }
+
+  .cta-section .section-title {
+    color: white;
+    max-width: 600px;
+    margin: 0 auto 1rem;
+  }
+
+  .cta-section .section-subtitle {
+    color: rgba(255,255,255,0.6);
+    margin: 0 auto 2.5rem;
+  }
+
+  .cta-section .waitlist-form input,
+  .cta-section .waitlist-form select {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    color: white;
+  }
+
+  .cta-section .waitlist-form select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  .cta-section .waitlist-form input::placeholder { color: rgba(255,255,255,0.4); }
+  .cta-section .hero-note { color: rgba(255,255,255,0.4); }
+
+  /* FOOTER */
+  footer {
+    background: var(--charcoal);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    padding: 1.5rem 2rem;
+  }
+
+  footer p {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+  }
+
+  footer span { color: var(--orange); }
+
+  /* SUCCESS MESSAGE */
+  .success-msg {
+    display: none;
+    background: var(--green);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    .stats { gap: 1.5rem; }
+    .hero h1 { letter-spacing: -0.5px; }
+    .waitlist-form { flex-direction: column; align-items: center; }
+    .waitlist-form input,
+    .waitlist-form select { width: 100%; max-width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">brid<span>yo</span></div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"
+    data-fr="🍽️ Bêta ouverte — Rejoignez la liste d'attente"
+    data-en="🍽️ Now in Beta — Join the waitlist">
+    🍽️ Bêta ouverte — Rejoignez la liste d'attente
+  </div>
+  <h1
+    data-fr="Trouvez votre <em>traiteur africain</em> en quelques minutes"
+    data-en="Find your <em>African caterer</em> in minutes">
+    Trouvez votre <em>traiteur africain</em> en quelques minutes
+  </h1>
+  <p class="hero-sub"
+    data-fr="Mariage, baptême, anniversaire ou dîner à domicile — réservez un traiteur vérifié, disponible, sans galère."
+    data-en="Wedding, baptism, birthday or home dinner — book a verified caterer, available now, no hassle.">
+    Mariage, baptême, anniversaire ou dîner à domicile — réservez un traiteur vérifié, disponible, sans galère.
+  </p>
+  <div class="waitlist-form">
+    <input type="email" id="hero-email"
+      placeholder="votre@email.com"
+      data-placeholder-fr="votre@email.com"
+      data-placeholder-en="your@email.com">
+    <select id="hero-type"
+      data-fr-opt1="Je suis un particulier"
+      data-fr-opt2="Je suis un traiteur"
+      data-en-opt1="I'm looking for a caterer"
+      data-en-opt2="I'm a caterer">
+      <option value="" disabled selected data-fr="Je suis…" data-en="I am…">Je suis…</option>
+      <option value="client" data-fr="Un particulier / organisateur" data-en="A client / event organiser">Un particulier / organisateur</option>
+      <option value="traiteur" data-fr="Un traiteur africain" data-en="An African caterer">Un traiteur africain</option>
+    </select>
+    <button class="btn-primary" onclick="handleSignup('hero')"
+      data-fr="Rejoindre la liste"
+      data-en="Get Early Access">
+      Rejoindre la liste
+    </button>
+  </div>
+  <div class="success-msg" id="hero-success"
+    data-fr="🎉 Vous êtes sur la liste ! On vous contacte bientôt."
+    data-en="🎉 You're on the list! We'll be in touch soon.">
+    🎉 Vous êtes sur la liste ! On vous contacte bientôt.
+  </div>
+  <p class="hero-note"
+    data-fr="Gratuit · Aucune carte bancaire requise"
+    data-en="Free to join · No credit card required">
+    Gratuit · Aucune carte bancaire requise
+  </p>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-number">2M+</div>
+    <div class="stat-label"
+      data-fr="Africains de la diaspora en France"
+      data-en="Africans in the diaspora in France">
+      Africains de la diaspora en France
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">&lt; 5 min</div>
+    <div class="stat-label"
+      data-fr="Pour trouver un traiteur disponible"
+      data-en="To find an available caterer">
+      Pour trouver un traiteur disponible
+    </div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">100%</div>
+    <div class="stat-label"
+      data-fr="Traiteurs vérifiés et notés"
+      data-en="Verified and rated caterers">
+      Traiteurs vérifiés et notés
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="section-inner">
+    <div class="section-eyebrow"
+      data-fr="Le problème"
+      data-en="The Problem">Le problème</div>
+    <h2 class="section-title"
+      data-fr="Trouver un bon traiteur africain, <em>c'est une vraie galère.</em>"
+      data-en="Finding a great African caterer <em>is a real headache.</em>">
+      Trouver un bon traiteur africain, <em>c'est une vraie galère.</em>
+    </h2>
+    <p class="section-subtitle"
+      data-fr="Les groupes WhatsApp et le bouche à oreille ne suffisent plus."
+      data-en="WhatsApp groups and word of mouth are no longer enough.">
+      Les groupes WhatsApp et le bouche à oreille ne suffisent plus.
+    </p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">🌫️</div>
+        <h3 data-fr="Aucune visibilité sur la qualité" data-en="No visibility on quality">
+          Aucune visibilité sur la qualité
+        </h3>
+        <p data-fr="Impossible de savoir à l'avance si le traiteur sera au niveau. Pas d'avis fiables, pas de garantie, pas de photos réelles."
+           data-en="No way to know in advance if the caterer will deliver. No reliable reviews, no guarantee, no real photos.">
+          Impossible de savoir à l'avance si le traiteur sera au niveau. Pas d'avis fiables, pas de garantie, pas de photos réelles.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🕸️</div>
+        <h3 data-fr="Tout passe par le réseau" data-en="Everything goes through connections">
+          Tout passe par le réseau
+        </h3>
+        <p data-fr="Si vous ne connaissez pas le bon traiteur dans votre entourage, vous êtes coincé. L'accès est inégal et aléatoire."
+           data-en="If you don't know the right person in your circle, you're stuck. Access is unequal and random.">
+          Si vous ne connaissez pas le bon traiteur dans votre entourage, vous êtes coincé. L'accès est inégal et aléatoire.
+        </p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">⏳</div>
+        <h3 data-fr="Annulations et imprévus de dernière minute" data-en="Last-minute cancellations and surprises">
+          Annulations et imprévus de dernière minute
+        </h3>
+        <p data-fr="Des semaines de recherche, des devis qui tardent, des traiteurs qui annulent. Vous méritez fiabilité et sérénité."
+           data-en="Weeks of searching, slow quotes, caterers who cancel. You deserve reliability and peace of mind.">
+          Des semaines de recherche, des devis qui tardent, des traiteurs qui annulent. Vous méritez fiabilité et sérénité.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="section-inner">
+    <div class="section-eyebrow"
+      data-fr="Comment ça marche"
+      data-en="How it works">Comment ça marche</div>
+    <h2 class="section-title"
+      data-fr="Trois étapes vers votre <em>événement réussi</em>"
+      data-en="Three steps to your <em>perfect event</em>">
+      Trois étapes vers votre <em>événement réussi</em>
+    </h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <h3 data-fr="Décrivez votre événement" data-en="Describe your event">
+          Décrivez votre événement
+        </h3>
+        <p data-fr="Type d'événement, nombre de personnes, date, cuisine souhaitée — précisez vos besoins en 2 minutes."
+           data-en="Event type, number of guests, date, cuisine preference — share your needs in 2 minutes.">
+          Type d'événement, nombre de personnes, date, cuisine souhaitée — précisez vos besoins en 2 minutes.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <h3 data-fr="Recevez des traiteurs disponibles" data-en="Get matched with available caterers">
+          Recevez des traiteurs disponibles
+        </h3>
+        <p data-fr="Bridyo vous connecte avec des traiteurs africains vérifiés et disponibles à votre date."
+           data-en="Bridyo connects you with verified African caterers available on your date.">
+          Bridyo vous connecte avec des traiteurs africains vérifiés et disponibles à votre date.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <h3 data-fr="Réservez et profitez" data-en="Book and enjoy">
+          Réservez et profitez
+        </h3>
+        <p data-fr="Comparez les profils, lisez les avis, confirmez et payez en sécurité. Votre événement est entre de bonnes mains."
+           data-en="Compare profiles, read reviews, confirm and pay securely. Your event is in good hands.">
+          Comparez les profils, lisez les avis, confirmez et payez en sécurité. Votre événement est entre de bonnes mains.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="forwho">
+  <div class="section-inner">
+    <div class="section-eyebrow"
+      data-fr="Pour qui ?"
+      data-en="Who is Bridyo for?">Pour qui ?</div>
+    <h2 class="section-title"
+      data-fr="Deux côtés. Un seul <em>pont.</em>"
+      data-en="Two sides. One <em>bridge.</em>">
+      Deux côtés. Un seul <em>pont.</em>
+    </h2>
+    <div class="who-grid">
+      <div class="who-card seeker">
+        <h3 data-fr="Organisateurs" data-en="Event Organisers">Organisateurs</h3>
+        <p class="subtitle"
+          data-fr="Mariages, baptêmes, anniversaires, dîners à domicile"
+          data-en="Weddings, baptisms, birthdays, home dinners">
+          Mariages, baptêmes, anniversaires, dîners à domicile
+        </p>
+        <ul>
+          <li data-fr="Trouvez un traiteur vérifié rapidement" data-en="Find a verified caterer quickly">Trouvez un traiteur vérifié rapidement</li>
+          <li data-fr="Comparez les menus et les tarifs" data-en="Compare menus and prices">Comparez les menus et les tarifs</li>
+          <li data-fr="Réservez et payez en toute sécurité" data-en="Book and pay securely">Réservez et payez en toute sécurité</li>
+          <li data-fr="Lisez les avis de vrais clients" data-en="Read real customer reviews">Lisez les avis de vrais clients</li>
+        </ul>
+      </div>
+      <div class="who-card helper">
+        <h3 data-fr="Traiteurs" data-en="Caterers">Traiteurs</h3>
+        <p class="subtitle"
+          data-fr="Cuisiniers et traiteurs africains en France et en Europe"
+          data-en="African cooks and caterers across France and Europe">
+          Cuisiniers et traiteurs africains en France et en Europe
+        </p>
+        <ul>
+          <li data-fr="Recevez des demandes qualifiées directement" data-en="Receive qualified bookings directly">Recevez des demandes qualifiées directement</li>
+          <li data-fr="Gérez vos disponibilités facilement" data-en="Manage your availability easily">Gérez vos disponibilités facilement</li>
+          <li data-fr="Encaissez des paiements sécurisés" data-en="Collect secure payments">Encaissez des paiements sécurisés</li>
+          <li data-fr="Construisez votre réputation en ligne" data-en="Build your online reputation">Construisez votre réputation en ligne</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="section-eyebrow"
+    data-fr="Rejoignez le mouvement"
+    data-en="Join the movement">Rejoignez le mouvement</div>
+  <h2 class="section-title"
+    data-fr="Soyez parmi les premiers à <em>découvrir</em> Bridyo"
+    data-en="Be the first to <em>experience</em> Bridyo">
+    Soyez parmi les premiers à <em>découvrir</em> Bridyo
+  </h2>
+  <p class="section-subtitle"
+    data-fr="Rejoignez la liste d'attente et accédez à la plateforme en avant-première dès le lancement."
+    data-en="Join the waitlist today and get early access when we launch.">
+    Rejoignez la liste d'attente et accédez à la plateforme en avant-première dès le lancement.
+  </p>
+  <div class="waitlist-form">
+    <input type="email" id="cta-email"
+      placeholder="votre@email.com"
+      data-placeholder-fr="votre@email.com"
+      data-placeholder-en="your@email.com">
+    <select id="cta-type"
+      data-fr-opt1="Un particulier / organisateur"
+      data-fr-opt2="Un traiteur africain"
+      data-en-opt1="A client / event organiser"
+      data-en-opt2="An African caterer">
+      <option value="" disabled selected data-fr="Je suis…" data-en="I am…">Je suis…</option>
+      <option value="client">Un particulier / organisateur</option>
+      <option value="traiteur">Un traiteur africain</option>
+    </select>
+    <button class="btn-primary" onclick="handleSignup('cta')"
+      data-fr="Rejoindre la liste"
+      data-en="Join the Waitlist">
+      Rejoindre la liste
+    </button>
+  </div>
+  <div class="success-msg" id="cta-success"
+    data-fr="🎉 Vous êtes sur la liste ! On vous contacte bientôt."
+    data-en="🎉 You're on the list! We'll be in touch soon.">
+    🎉 Vous êtes sur la liste ! On vous contacte bientôt.
+  </div>
+  <p class="hero-note"
+    data-fr="Gratuit · Aucun spam, jamais."
+    data-en="Free to join · No spam, ever.">
+    Gratuit · Aucun spam, jamais.
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Bridyo</span> · <span id="footer-tagline">Réservez un traiteur africain en quelques minutes</span></p>
+</footer>
+
+<script>
+  let currentLang = 'fr';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+
+    document.querySelectorAll('[data-fr]').forEach(el => {
+      const text = el.getAttribute(`data-${lang}`);
+      if (text && el.tagName !== 'OPTION' && el.tagName !== 'SELECT') {
+        el.innerHTML = text;
+      }
+    });
+
+    document.querySelectorAll('[data-placeholder-fr]').forEach(el => {
+      el.placeholder = el.getAttribute(`data-placeholder-${lang}`);
+    });
+
+    // Update select options
+    document.querySelectorAll('select option').forEach(opt => {
+      const val = opt.getAttribute(`data-${lang}`);
+      if (val) opt.textContent = val;
+    });
+
+    // Footer tagline
+    const tagline = document.getElementById('footer-tagline');
+    if (tagline) {
+      tagline.textContent = lang === 'fr'
+        ? 'Réservez un traiteur africain en quelques minutes'
+        : 'Book an African caterer in minutes';
+    }
+  }
+
+  function handleSignup(section) {
+    const input = document.getElementById(`${section}-email`);
+    const success = document.getElementById(`${section}-success`);
+    const email = input.value.trim();
+
+    if (!email || !email.includes('@')) {
+      input.style.borderColor = '#E05A2B';
+      input.focus();
+      setTimeout(() => input.style.borderColor = '', 1500);
+      return;
+    }
+
+    const form = input.closest('.waitlist-form');
+    form.style.display = 'none';
+    success.style.display = 'inline-block';
+    success.innerHTML = success.getAttribute(`data-${currentLang}`);
+  }
+</script>
+</body>
+</html>
