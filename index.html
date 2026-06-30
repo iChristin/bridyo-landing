@@ -859,9 +859,14 @@
   }
 
   async function sendConfirmationEmail(email, type, lang) {
-    // Utilise ton service d'email préféré ici (Resend, Brevo, etc.)
-    // Pour l'instant on log juste — on connectera Resend à l'étape suivante
-    console.log(`[Bridyo] Email de confirmation à envoyer à ${email} (type: ${type}, lang: ${lang})`);
+   await fetch(`${SUPABASE_URL}/functions/v1/send-confirmation`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+  },
+  body: JSON.stringify({ email, type, lang })
+});
   }
 
   async function handleSignup(section) {
